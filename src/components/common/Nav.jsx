@@ -1,11 +1,38 @@
-import React from 'react'
+import React from "react";
+import styled from "styled-components";
+import Button from "./Button";
+import { Link } from "react-router-dom";
 
 const Nav = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+    return (
+        <StNav>
+            <StMenu to={'/'}>HOME</StMenu>
+            <StAddBtn bc="#000" color="#fff" hoverbc="#eee" hovercolor="black" outline="#000" size="medium" outbc="black">
+                + PROJECT
+            </StAddBtn>
+        </StNav>
+    );
+};
 
-export default Nav
+export default Nav;
+
+const StNav = styled.div`
+    height: 60px;
+    background-color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`;
+const StMenu = styled(Link)`
+    color: #fff;
+    margin: 0 15px;
+    cursor: pointer;
+    font-weight: 900;
+    :hover {
+    color: #eee;
+    font-size: large;
+  }
+`;
+const StAddBtn = styled(Button.ButtonC)`
+  margin: 0 15px;
+`
