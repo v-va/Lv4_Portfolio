@@ -16,7 +16,7 @@ const Modal = ({ onClose }) => {
     >
       <Modalbox>
         <Headers>
-          새 글 작성
+          PROJECT 추가
           <CloseBtn
             onClick={() => {
               onClose(false);
@@ -72,8 +72,8 @@ const Footer = styled.div`
 `;
 
 const Line = styled.hr`
-  margin-top: 15px;
-  border: 1px solid black;
+  /* margin-top: 15px; */
+  border: 1px solid #eee;
 `;
 
 const ModalBG = styled.div`
@@ -107,6 +107,9 @@ const Modalbox = styled.div`
   height: 500px;
   border-radius: 30px;
   z-index: 100;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
+
+
 `;
 
 const CloseBtn = styled.button`
@@ -116,11 +119,10 @@ const CloseBtn = styled.button`
   background-color: white;
   color: black;
   font-weight: 900;
+  font-size: 20px;
   border: 1.5px solid black;
   :hover {
-    background-color: black;
-    color: white;
-    border: 2px solid black;
+    transform: scale(115%);
   }
 `;
 
@@ -130,7 +132,13 @@ const Headers = styled.div`
   align-items: center;
   padding: 0px 30px;
   font-weight: 700;
-  margin-top: 15px;
+  /* margin-top: 15px; */
+  height: 65px;
+  color: white;
+  background-color: black;
+  border-top-right-radius: 30px;
+  border-top-left-radius: 30px;
+  
 `;
 
 const Body = styled.div`
@@ -147,6 +155,7 @@ const Stinput = styled.input`
   border-right: none;
   font-weight: 700;
   padding-left: 10px;
+  border-color: #eee;
 `;
 
 const TextArea = styled.div`
@@ -156,6 +165,7 @@ const TextArea = styled.div`
   align-items: center;
   font-weight: 700;
   width: 160px;
+  color: gray;
 `;
 
 const InputArea = styled.div`
