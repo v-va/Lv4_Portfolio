@@ -11,7 +11,6 @@ const Nav = () => {
     return (
         <>
             <div>
-                {modal === true ? <Modal /> : null}
                 {modal && (
                     <Modal
                         onClose={() => {
