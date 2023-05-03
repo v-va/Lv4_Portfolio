@@ -18,7 +18,7 @@ const Contents = () => {
         return () => {
             // 언마운팅 될 때 실행할 부분
         };
-    }, [proj]); //[] : dependency array
+    }, []); //[] : dependency array
 
     return (
         <>
