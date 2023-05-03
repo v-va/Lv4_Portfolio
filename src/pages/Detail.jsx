@@ -4,23 +4,38 @@ import Nav from "../components/common/Nav";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import styled from "styled-components";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import Button from "../components/common/Button";
 import axios from "axios";
 
 
 const Detail = () => {
+    // 조회 영역
     const [project,setProject] = useState('')
     const {id} = useParams()
     const fetchProject = async () => {
         const {data} = await axios.get(`${process.env.REACT_APP_SERVER_URL}/project/${id}`)
-        console.log(data)
         setProject(data)
     }
-
     useEffect(() =>{
         fetchProject()
     },[])
+    
+    //삭제 영역
+
+    const navigate = useNavigate()
+
+    const onDeleteButtonHandler = async (id) => {
+        if(window.confirm('삭제 하시겠습니까?')){
+            axios.delete(`${process.env.REACT_APP_SERVER_URL}/project/${id}`)
+            navigate("/")
+            setProject('')
+            alert('삭제되었습니다')
+        }else{
+            return;
+        }
+    }
+    
     return (
         <>
             <Layout>
@@ -36,8 +51,9 @@ const Detail = () => {
                                 {project.title} <StClickIcon>click!</StClickIcon>
                             </StProjTitle>
                                 <StBtnWrap>
-                                <StBtn bc="white" color="black" hovercolor="gray">수정</StBtn>
-                                <StBtn bc="white" color="black" hovercolor="gray">삭제</StBtn>
+                                <StBtn>수정</StBtn>
+                                <StBtn onClick ={() => {onDeleteButtonHandler(project.id)}}
+                                >삭제</StBtn>
                                 </StBtnWrap>
 
                             <StProjintro>{project.content}</StProjintro>
@@ -86,12 +102,16 @@ const StClickIcon = styled.span`
 const StBtnWrap = styled.div`
     float: right;
     margin-top: -10px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
 
 `;
-const StBtn = styled(Button.ButtonC)`
-    width: 30px;
-    transform: scale(120%);
-    :active{
-        transform: scale(115%);
-    }
+const StBtn = styled.button`
+    all: unset;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+
 `;
