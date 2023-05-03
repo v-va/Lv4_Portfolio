@@ -1,3 +1,4 @@
+
 import React, { useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
@@ -54,6 +55,7 @@ const Modal = ({ onClose }) => {
 
   const outside = useRef();
   return createPortal(
+
     <ModalBG
       ref={outside}
       onClick={(e) => {
@@ -174,19 +176,22 @@ const Modal = ({ onClose }) => {
         </Footer>
       </Modalbox>
     </ModalBG>,
-    document.getElementById("modal")
-  );
-};
+    document.getElementById('modal')
 
-export default Modal;
+  )
+}
+
+
+export default Modal
+
 
 const Footer = styled.div`
-  display: flex;
-  justify-content: end;
-  align-items: center;
-  margin-right: 30px;
-  margin-top: 40px;
-`;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin-right: 30px;
+    margin-top : 40px;
+`
 
 const Line = styled.hr`
 
@@ -194,29 +199,29 @@ const Line = styled.hr`
 `;
 
 const ModalBG = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
-  height: 100vh;
-  width: 100%;
-  position: fixed;
-  z-index: 999;
-`;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    z-index:999;
+`
 
-const SearchBtn = styled.label`
-  padding: 5px 10px;
-  margin-left: 20px;
-  margin-top: 10px;
-  border-radius: 5px;
-  border: 1px solid black;
-  background-color: white;
-  cursor: pointer;
-  :active {
-    background-color: black;
-    color: white;
-  }
-`;
+const SearchBtn = styled.button`
+    width: 30px;
+    height: 20px;
+    margin-left: 20px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid black;
+    background-color: white;
+    :active{
+        background-color: black;
+        color: white;
+    }
+`
 
 const Modalbox = styled.div`
   background-color: white;
@@ -255,10 +260,13 @@ const Headers = styled.div`
 `;
 
 const Body = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 40px;
-`;
+    display: flex;
+    align-items: center;
+    margin-top: 40px;
+
+
+
+`
 
 const Stinput = styled.input`
   width: 550px;
@@ -282,7 +290,34 @@ const TextArea = styled.div`
 `;
 
 const InputArea = styled.div`
-  gap: 30px;
-  display: flex;
-  flex-direction: column;
-`;
+    gap: 30px;
+    display: flex;
+    flex-direction: column;
+
+    
+
+`
+
+
+
+
+
+
+                
+
+
+
+
+
+
+                
+
+
+
+
+
+
+
+                    
+
+
