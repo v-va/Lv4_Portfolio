@@ -1,56 +1,41 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Contents = () => {
+    const [proj, setProj] = useState([{ id: '', title: "", info: "", content: "", path: "", url: "" }]);
+
+    const fetchProj = async () => {
+        const { data } = await axios.get("http://localhost:4000/project");
+        console.log("data", data);
+        setProj(data);
+    };
+
+    useEffect(() => {
+        // 마운팅 됐을 때 실행
+        fetchProj();
+        return () => {
+            // 언마운팅 될 때 실행할 부분
+        };
+    }, []); //[] : dependency array
+
     return (
         <>
             <StContainer>
-                    <StProjWrap to={"/detail/1"}>
-                        <StProjThumbnail>
-                            <img src="" alt="" />
-                        </StProjThumbnail>
-                        <StProjContents>
-                            <StProjTitle>PROJECT A</StProjTitle>
-                            <div className="projInfo">이 페이지는 어떠어떠한 페이지 입니다.</div>
-                        </StProjContents>
-                    </StProjWrap>
-                    <StProjWrap>
-                        <StProjThumbnail>
-                            <img src="" alt="" />
-                        </StProjThumbnail>
-                        <StProjContents>
-                            <StProjTitle>PROJECT A</StProjTitle>
-                            <div className="projInfo">이 페이지는 어떠어떠한 페이지 입니다. 이런 저런 내용이 있고, 그렇습니다.</div>
-                        </StProjContents>
-                    </StProjWrap>
-                    <StProjWrap>
-                        <StProjThumbnail>
-                            <img src="" alt="" />
-                        </StProjThumbnail>
-                        <StProjContents>
-                            <StProjTitle>PROJECT A</StProjTitle>
-                            <div className="projInfo">이 페이지는 어떠어떠한 페이지 입니다. 이런 저런 내용이 있고, 그렇습니다. 하하하하하하하하하하하. 만드는데 힘들었어요 ㅠㅠㅋㅋㅋ 예쁘게 봐주세요 🤭🥳😇</div>
-                        </StProjContents>
-                    </StProjWrap>
-                    <StProjWrap>
-                        <StProjThumbnail>
-                            <img src="" alt="" />
-                        </StProjThumbnail>
-                        <StProjContents>
-                            <StProjTitle>PROJECT A</StProjTitle>
-                            <div className="projInfo">이 페이지는 어떠어떠한 페이지 입니다. 이런 저런 내용이 있고, 그렇습니다. 하하하하하하하하하하하. 만드는데 힘들었어요 ㅠㅠㅋㅋㅋ 예쁘게 봐주세요 🤭🥳😇</div>
-                        </StProjContents>
-                    </StProjWrap>
-                    <StProjWrap>
-                        <StProjThumbnail>
-                            <img src="" alt="" />
-                        </StProjThumbnail>
-                        <StProjContents>
-                            <StProjTitle>PROJECT A</StProjTitle>
-                            <div className="projInfo">이 페이지는 어떠어떠한 페이지 입니다. 이런 저런 내용이 있고, 그렇습니다. 하하하하하하하하하하하. 만드는데 힘들었어요 ㅠㅠㅋㅋㅋ 예쁘게 봐주세요 🤭🥳😇</div>
-                        </StProjContents>
-                    </StProjWrap>
+                {proj.map((pj) => {
+                    return (
+                        <StProjWrap to={`/detail/${pj.id}`} key={pj.id}>
+                            <div>
+                                <StProjThumbnail src={process.env.PUBLIC_URL + pj.path} alt="" />
+                            </div>
+                            <StProjContents>
+                                <StProjTitle>{pj.title}</StProjTitle>
+                                <StProjInfo>{pj.content}</StProjInfo>
+                            </StProjContents>
+                        </StProjWrap>
+                    );
+                })}
             </StContainer>
         </>
     );
@@ -63,24 +48,31 @@ const StContainer = styled.div`
     width: 1000px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    row-gap: 40px;
+    row-gap: 60px;
     column-gap: 40px;
     padding: 40px;
 `;
 const StProjWrap = styled(Link)`
-    border: 1px solid #eee;
+    /* border: 1px solid #eee; */
+    border: none;
+    box-shadow: 0 8px 32px 0 rgba(155, 152, 152, 0.37);
     border-radius: 15px;
+    background-color: #eee;
 `;
-const StProjThumbnail = styled.div`
-    height: 300px;
-    background-color: #ccc;
+const StProjThumbnail = styled.img`
+    height: 250px;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
 `;
 const StProjContents = styled.div`
+    max-width: 438px;
     height: 150px;
     text-align: justify;
     padding: 15px 30px 30px;
+    background-color: #eee;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    overflow: hidden;
 `;
 const StProjTitle = styled.h2`
     padding: 10px 0;
@@ -88,3 +80,11 @@ const StProjTitle = styled.h2`
     font-weight: bold;
     font-size: 20px;
 `;
+const StProjInfo = styled.div`
+
+    height: 40px;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+`
