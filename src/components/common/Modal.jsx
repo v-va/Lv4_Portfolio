@@ -8,38 +8,52 @@ const Modal = ({onClose}) => {
     const outside = useRef()
     return createPortal(
     <ModalBG
-    ref = {outside}
-    onClick={(e) => {
-        if (e.target === outside.current) onClose(false)}}>
-        <Modalbox>
-            <Headers>
-                새 글 작성
-                <CloseBtn onClick={() => {
-                    onClose(false);                    
-                }}>X</CloseBtn>
-            </Headers>
-                <Line/>
-            <Body>
-                <TextArea>
-                <span>제목</span>
-                <span>소개글</span>
-                <span>상세 설명</span>
-                <span>썸네일</span>
-                <span>URL</span>
-                </TextArea>
-                <InputArea>
-                <Stinput/>
-                <Stinput/>
-                <Stinput/>
-                <span><Stinput/>
-                <SearchBtn>...</SearchBtn></span>
-                <Stinput/>
-                </InputArea>
-            </Body>
-            <Footer>
-            <Button.ButtonA size = 'medium'>저장 하기</Button.ButtonA>
-            </Footer>
-        </Modalbox>
+      ref={outside}
+      onClick={(e) => {
+        if (e.target === outside.current) onClose(false);
+      }}
+    >
+      <Modalbox>
+        <Headers>
+          PROJECT 추가
+          <CloseBtn
+            onClick={() => {
+              onClose(false);
+            }}
+          >
+            X
+          </CloseBtn>
+        </Headers>
+        <Line />
+        <Body>
+          <TextArea>
+            <span>제목</span>
+            <span>소개글</span>
+            <span>상세 설명</span>
+            <span>썸네일</span>
+            <span>URL</span>
+          </TextArea>
+          <InputArea>
+            <Stinput /> {/* 제목 INPUT */}
+            <Stinput /> {/* 소개글 INPUT */}
+            <Stinput /> {/* 상세설명 INPUT */}
+            <input type="file" 
+            id="input-file" 
+            style={{ display: "none" }}
+            value={imgfile}
+            onChange={(e) => {setimageFile(e.target.value)}} 
+            />
+            <span>  
+              <Stinput type="text" value={imgfile}/> {/* 썸네일 INPUT */}
+              <SearchBtn htmlFor="input-file">...</SearchBtn>
+            </span>
+            <Stinput /> {/* URL INPUT */}
+          </InputArea>
+        </Body>
+        <Footer>
+          <Button.ButtonA size="medium">저장 하기</Button.ButtonA>
+        </Footer>
+      </Modalbox>
     </ModalBG>,
     document.getElementById('modal')
 
@@ -58,9 +72,9 @@ const Footer = styled.div`
 `
 
 const Line = styled.hr`
-    margin-top: 15px;
-    border: 1px solid black;
-`
+  /* margin-top: 15px; */
+  border: 1px solid #eee;
+`;
 
 const ModalBG = styled.div`
     display: flex;
@@ -88,39 +102,44 @@ const SearchBtn = styled.button`
 `
 
 const Modalbox = styled.div`
-    background-color: white;
-    width: 800px;
-    height: 500px;
-    border-radius: 30px;
-    z-index: 100;
+  background-color: white;
+  width: 800px;
+  height: 500px;
+  border-radius: 30px;
+  z-index: 100;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
 
 
-`
+`;
 
 const CloseBtn = styled.button`
-    width: 35px;
-    height: 35px;
-    border-radius: 30px;
-    background-color: white;
-    color: black;
-    font-weight: 900;
-    border: 1.5px solid black;;
-    :hover{
-        background-color: black;
-        color:white;
-        border: 2px solid black;
-    }
-    
-`
+  width: 35px;
+  height: 35px;
+  border-radius: 30px;
+  background-color: white;
+  color: black;
+  font-weight: 900;
+  font-size: 20px;
+  border: 1.5px solid black;
+  :hover {
+    transform: scale(115%);
+  }
+`;
 
 const Headers = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0px 30px;
-    font-weight: 700;
-    margin-top: 15px;
-`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 30px;
+  font-weight: 700;
+  /* margin-top: 15px; */
+  height: 65px;
+  color: white;
+  background-color: black;
+  border-top-right-radius: 30px;
+  border-top-left-radius: 30px;
+  
+`;
 
 const Body = styled.div`
     display: flex;
@@ -132,24 +151,25 @@ const Body = styled.div`
 `
 
 const Stinput = styled.input`
-    width: 550px;
-    height: 30px;
-    border-top : none;
-    border-left: none;
-    border-right: none;
-    font-weight: 700;
-    padding-left: 10px;
-`
+  width: 550px;
+  height: 30px;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  font-weight: 700;
+  padding-left: 10px;
+  border-color: #eee;
+`;
 
 const TextArea = styled.div`
-    gap: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-weight: 700;
-    width: 160px;
-
-`
+  gap: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: 700;
+  width: 160px;
+  color: gray;
+`;
 
 const InputArea = styled.div`
     gap: 30px;
