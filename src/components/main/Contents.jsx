@@ -18,7 +18,7 @@ const Contents = () => {
         return () => {
             // 언마운팅 될 때 실행할 부분
         };
-    }, []); //[] : dependency array
+    }, [proj]); //[] : dependency array
 
     return (
         <>
@@ -53,7 +53,6 @@ const StContainer = styled.div`
     padding: 40px;
 `;
 const StProjWrap = styled(Link)`
-    /* border: 1px solid #eee; */
     border: none;
     box-shadow: 0 8px 32px 0 rgba(155, 152, 152, 0.37);
     border-radius: 15px;
@@ -79,12 +78,18 @@ const StProjTitle = styled.h2`
     margin-bottom: 10px;
     font-weight: bold;
     font-size: 20px;
-`;
-const StProjInfo = styled.div`
-
-    height: 40px;
     display: block;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+`;
+const StProjInfo = styled.div`
+
+    height: 40px;
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word; 
+    -webkit-line-clamp: 2; 
+    -webkit-box-orient: vertical; 
 `
