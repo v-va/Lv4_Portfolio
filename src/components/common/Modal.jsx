@@ -1,9 +1,9 @@
-
 import React, { useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
 import Button from "./Button";
 import axios from "axios";
+import { useSpring, animated } from '@react-spring/web'
 
 const Modal = ({ onClose }) => {
   const [imgfile, setimageFile] = useState('');
@@ -32,14 +32,14 @@ const Modal = ({ onClose }) => {
     }if(inputvalue.content ===""){
       alert('상세 설명을 입력해 주세요')
       return null
-    }if(inputvalue.path ===""){
-      alert('경로을 입력해 주세요')
-      return null
-    }if(inputvalue.url ===""){
+    }// if(inputvalue.path ===""){
+    //   alert('경로을 입력해 주세요')
+    //   return null}
+      if(inputvalue.url ===""){
       alert('URL을 입력해 주세요')
       return null
     }if(inputvalue){
-      axios.post("http://localhost:4000/project", inputvalue);
+      axios.post(`${process.env.REACT_APP_SERVER_URL}/project`, inputvalue);
 
       onClose(false);
     }
@@ -47,21 +47,16 @@ const Modal = ({ onClose }) => {
     
 
 
+const openAnimation = useSpring({
+  from: { opacity: 0 },
+  to: { opacity: 1 },
+  config: { duration: 300 },
+});
 
-
-
-    
-
-
-  const outside = useRef();
   return createPortal(
-
-    <ModalBG
-      ref={outside}
-      onClick={(e) => {
-        if (e.target === outside.current) onClose(false);
-      }}
-    >
+    <animated.div
+    style={openAnimation}>
+    <ModalBG>
       <Modalbox>
         <Headers>
           PROJECT 추가
@@ -175,12 +170,11 @@ const Modal = ({ onClose }) => {
           </Button.ButtonA>
         </Footer>
       </Modalbox>
-    </ModalBG>,
-    document.getElementById('modal')
-
-  )
-}
-
+    </ModalBG>
+    </animated.div>,
+    document.getElementById("modal")
+  );
+};
 
 export default Modal
 
@@ -209,19 +203,19 @@ const ModalBG = styled.div`
     z-index:999;
 `
 
-const SearchBtn = styled.button`
-    width: 30px;
-    height: 20px;
-    margin-left: 20px;
-    margin-top: 10px;
-    border-radius: 5px;
-    border: 1px solid black;
-    background-color: white;
-    :active{
-        background-color: black;
-        color: white;
-    }
-`
+const SearchBtn = styled.label`
+  padding: 2px 10px;
+  margin-left: 20px;
+  margin-top: 10px;
+  border-radius: 5px;
+  border: 1.5px solid black;
+  background-color: white;
+  cursor: pointer;
+  :active {
+    background-color: black;
+    color: white;
+  }
+`;
 
 const Modalbox = styled.div`
   background-color: white;
