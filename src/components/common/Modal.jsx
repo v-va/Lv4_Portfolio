@@ -4,22 +4,20 @@ import styled from "styled-components";
 import Button from "./Button";
 import axios from "axios";
 import { useSpring, animated } from '@react-spring/web'
+import { editProject } from "../../api/project";
+import { useQuery } from "react-query";
 
-const Modal = ({ onClose }) => {
+const Modal = ({ onClose, project = {
+  title: "",
+  info: "",
+  content: "",
+  path: "",
+  url: "",
+} }) => {
   const [imgfile, setimageFile] = useState('');
-  const [inputvalue, setinputValue] = useState({
-    title: "",
-    info: "",
-    content: "",
-    path: "",
-    url: "",
-  });
-
-
-  
-
+  const [inputvalue, setinputValue] = useState(project);
+  console.log(inputvalue)
   const onAddButtonHandler = async () => {
-
     if(inputvalue.info.length > 20) {
       alert('소개글은 20자 이내로 입력해 주세요!')
       return null
@@ -45,7 +43,7 @@ const Modal = ({ onClose }) => {
     }
 };
     
-
+const {isLoading, isError, data} = useQuery("project", editProject)
 
 const openAnimation = useSpring({
   from: { opacity: 0 },

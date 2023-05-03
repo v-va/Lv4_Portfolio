@@ -1,8 +1,18 @@
 import React from "react";
 import styled from "styled-components";
+import Nav from "./Nav"
+import Header from "./Header"
+import Footer from "./Footer";
 
 const Layout = ({ children }) => {
-  return <StLayout>{children}</StLayout>;
+  return (
+    <StLayout>
+      <Nav />
+      <Header />
+      {children}
+      <Footer />
+    </StLayout>
+    );
 };
 
 export default Layout;
