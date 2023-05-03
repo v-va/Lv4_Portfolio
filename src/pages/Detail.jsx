@@ -1,33 +1,62 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../components/common/Layout";
 import Nav from "../components/common/Nav";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import Button from "../components/common/Button";
+import axios from "axios";
+
 
 const Detail = () => {
+    // 조회 영역
+    const [project,setProject] = useState('')
+    const {id} = useParams()
+    const fetchProject = async () => {
+        const {data} = await axios.get(`${process.env.REACT_APP_SERVER_URL}/project/${id}`)
+        setProject(data)
+    }
+    useEffect(() =>{
+        fetchProject()
+    },[])
+    
+    //삭제 영역
+
+    const navigate = useNavigate()
+
+    const onDeleteButtonHandler = async (id) => {
+        if(window.confirm('삭제 하시겠습니까?')){
+            axios.delete(`${process.env.REACT_APP_SERVER_URL}/project/${id}`)
+            navigate("/")
+            setProject('')
+            alert('삭제되었습니다')
+        }else{
+            return;
+        }
+    }
+    
     return (
         <>
             <Layout>
                 <Nav />
                 <Header />
-                <StBtnWrap>
-                    <StBtn bc="#000" color="#fff" hoverbc="#eee" hovercolor="black" outline="#000" size="medium" outbc="black" >수정</StBtn>
-                    <StBtn bc="#000" color="#fff" hoverbc="#eee" hovercolor="black" outline="#000" size="medium" outbc="black" >삭제</StBtn>
-                </StBtnWrap>
                 <StContainer>
                     <StProjWrap>
                         <StProjThumbnail>
-                            <img src="" alt="" />
+                            <img src={project.path} alt="" />
                         </StProjThumbnail>
                         <StProjContents>
-                            <StProjTitle>
-                                PROJECT A <StClickIcon>click!</StClickIcon>
+                            <StProjTitle to={project.url}>
+                                {project.title} <StClickIcon>click!</StClickIcon>
                             </StProjTitle>
+                                <StBtnWrap>
+                                <StBtn>수정</StBtn>
+                                <StBtn onClick ={() => {onDeleteButtonHandler(project.id)}}
+                                >삭제</StBtn>
+                                </StBtnWrap>
 
-                            <StProjintro>이 페이지는 어떠어떠한 페이지 입니다. 이런 저런 내용이 있고, 그렇습니다. 하하하하하하하하하하하. 만드는데 힘들었어요 ㅠㅠㅋㅋㅋ 예쁘게 봐주세요 🤭🥳😇</StProjintro>
+                            <StProjintro>{project.content}</StProjintro>
                         </StProjContents>
                     </StProjWrap>
                 </StContainer>
@@ -72,5 +101,17 @@ const StClickIcon = styled.span`
 `;
 const StBtnWrap = styled.div`
     float: right;
+    margin-top: -10px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+
 `;
-const StBtn = styled(Button.ButtonC)``;
+const StBtn = styled.button`
+    all: unset;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+
+`;
