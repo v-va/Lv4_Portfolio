@@ -18,6 +18,7 @@ const Modal = ({ onClose, project = {
   const [inputvalue, setinputValue] = useState(project);
   const queryClient = useQueryClient()
   const location = useLocation()
+
   const mutation = useMutation(addProject,{
     onSuccess:() => {
       queryClient.invalidateQueries("project")
@@ -26,6 +27,7 @@ const Modal = ({ onClose, project = {
       
     }
   })
+
   const onAddButtonHandler = async () => {
     if(inputvalue.info.length > 50) {
       alert('소개글은 50자 이내로 입력해 주세요!')
@@ -54,7 +56,6 @@ const Modal = ({ onClose, project = {
     }
     if(inputvalue){
       mutation.mutate(inputvalue)
-
     }
 
 };
@@ -63,7 +64,6 @@ const Modal = ({ onClose, project = {
 const projectEditMutation = useMutation(editProject,{
   onSuccess:() => {
     queryClient.invalidateQueries("project")
-
     onClose(false)
   }
 })

@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import Modal from "../components/common/Modal";
-import { GetDetailProject , delProject } from "../api/project";
+import { useGetDetailProject , delProject } from "../api/project";
 import { QueryClient, useMutation } from "react-query";
 
 const Detail = () => {
     // 조회 영역
     const { id } = useParams();
-    const { project ,isLoading, isError } = GetDetailProject(id)
+    const { project ,isLoading, isError } = useGetDetailProject(id)
     
     
     //삭제 영역
@@ -75,9 +75,9 @@ const Detail = () => {
                                 삭제
                             </StBtn>
                         </StBtnWrap>
-                    <StProjThumbnail>
-                        <img src={project.path} alt="" />
-                    </StProjThumbnail>
+                    <StProjThumbnailWrap>
+                        <StProjThumbnail src={project.path} alt="" />
+                    </StProjThumbnailWrap>
                     <StProjContents>
                         <StProjTitle to={project.url}>
                             {project.title} <StClickIcon>click!</StClickIcon>
@@ -101,12 +101,16 @@ const StContainer = styled.div`
 const StProjWrap = styled.div`
     width: 70%;
 `;
-const StProjThumbnail = styled.div`
+const StProjThumbnailWrap = styled.div`
     display: flex;
     height: 400px;
-    background-color: lightgray;
     border-radius: 30px;
+    border: 1px solid #eee;
+    justify-content: center;
 `;
+const StProjThumbnail = styled.img`
+    border-radius: 30px;
+`
 const StProjContents = styled.div`
     text-align: justify;
     padding: 30px;

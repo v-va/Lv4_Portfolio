@@ -25,9 +25,9 @@ const Main = () => {
                 {data.map((pj) => {
                     return (
                         <StProjWrap to={`/detail/${pj.id}`} key={pj.id}>
-                            <div>
+                            <StProjThumbnailWrap>
                                 <StProjThumbnail src={process.env.PUBLIC_URL + pj.path} alt="" />
-                            </div>
+                            </StProjThumbnailWrap>
                             <StProjContents>
                                 <StProjTitle>{pj.title}</StProjTitle>
                                 <StProjInfo>{pj.info}</StProjInfo>
@@ -55,15 +55,18 @@ const StProjWrap = styled(Link)`
     border: none;
     box-shadow: 0 8px 32px 0 rgba(155, 152, 152, 0.37);
     border-radius: 15px;
-    background-color: #eee;
 `;
+const StProjThumbnailWrap = styled.div`
+    display: flex;
+    justify-content: center;
+`
 const StProjThumbnail = styled.img`
     height: 250px;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
 `;
 const StProjContents = styled.div`
-    max-width: 438px;
+    max-width: 440px;
     height: 150px;
     text-align: justify;
     padding: 15px 30px 30px;
@@ -83,7 +86,6 @@ const StProjTitle = styled.h2`
     text-overflow: ellipsis;
 `;
 const StProjInfo = styled.div`
-
     height: 40px;
     display: -webkit-box;
     overflow: hidden;
