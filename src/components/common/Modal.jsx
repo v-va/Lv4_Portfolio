@@ -43,17 +43,25 @@ const Modal = ({ onClose, project = {
     }
 };
     
-const {isLoading, isError, data} = useQuery("project", editProject)
+const {isLoading, isError, data} = useQuery("project", editProject);
 
-const openAnimation = useSpring({
-  from: { opacity: 0 },
-  to: { opacity: 1 },
-  config: { duration: 300 },
-});
+if(isLoading){
+  return <h1>로딩 중입니다...</h1>
+}
+
+if(isError){
+  return <h1>오류가 발생하였습니다...</h1>
+}
+
+// const openAnimation = useSpring({
+//   from: { opacity: 0 },
+//   to: { opacity: 1 },
+//   config: { duration: 300 },
+// });
 
   return createPortal(
-    <animated.div
-    style={openAnimation}>
+    // <animated.div
+    // style={openAnimation}>
     <ModalBG>
       <Modalbox>
         <Headers>
@@ -169,8 +177,8 @@ const openAnimation = useSpring({
         </Footer>
       </Modalbox>
     </ModalBG>
-    </animated.div>,
-    document.getElementById("modal")
+    // </animated.div>,
+    ,document.getElementById("modal")
   );
 };
 
