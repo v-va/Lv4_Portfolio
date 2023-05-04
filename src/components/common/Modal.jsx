@@ -7,16 +7,16 @@ import { useSpring, animated } from '@react-spring/web'
 import { addProject, editProject } from "../../api/project";
 import { QueryClient, useMutation, useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
+
 const Modal = ({ onClose, project = {
   title: "",
   info: "",
   content: "",
   path: "",
   url: "",
-} }) => {
+}, editModeModal = false }) => {
   const [imgfile, setimageFile] = useState('');
   const [inputvalue, setinputValue] = useState(project);
-
   const queryClient = new QueryClient()
   const location = useLocation()
   const mutation = useMutation(addProject,{
@@ -50,21 +50,36 @@ const Modal = ({ onClose, project = {
       if(inputvalue.url ===""){
       alert('URL을 입력해 주세요')
       return null
-    }if(inputvalue){
+    }
+    if(editModeModal){
+      projectEditMutation.mutate(inputvalue)
+    }
+    else if(inputvalue){
       await mutation.mutate(inputvalue)
+
     }
 
 };
     
-const {isLoading, isError, data} = useQuery("project", editProject);
+// const {isLoading, isError, data} = useQuery("project", ()=>editProject(project));
 
-if(isLoading){
-  return <h1>로딩 중입니다...</h1>
-}
+const projectEditMutation = useMutation(editProject,{
+  onSuccess:() => {
+    queryClient.invalidateQueries("project")
+    window.location.reload()
+    onClose(false)
+  }
+})
 
-if(isError){
-  return <h1>오류가 발생하였습니다...</h1>
-}
+// if(isLoading){
+//   return <h1>로딩 중입니다...</h1>
+// }
+
+// if(isError){
+//   return <h1>오류가 발생하였습니다...</h1>
+// }
+
+
 
 // const openAnimation = useSpring({
 //   from: { opacity: 0 },

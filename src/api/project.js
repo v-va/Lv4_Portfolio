@@ -30,8 +30,8 @@ const delProject = async (id) => {
     return response.data
 }
 // 수정
-const editProject = async () => {
-    const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/project`)
+const editProject = async (project) => {
+    const response = await axios.put(`${process.env.REACT_APP_SERVER_URL}/project/${project.id}`,project)
     return response
 }
 

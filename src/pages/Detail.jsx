@@ -60,6 +60,7 @@ const Detail = () => {
                         setModal(false);
                     }}
                     project={project}
+                    editModeModal={true}
                 />
             )}
             {project?

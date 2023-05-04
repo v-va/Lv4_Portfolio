@@ -8,7 +8,7 @@ import { getProject } from "../api/project";
 
 
 const Main = () => {
-    const {isLoading, isError, data} = useQuery("project", getProject)
+    const {isLoading, isError, data} = useQuery("projects", getProject)
 
     if (isLoading) {
         return<div>로딩중입니다..</div>
