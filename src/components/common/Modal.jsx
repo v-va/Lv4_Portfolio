@@ -4,9 +4,9 @@ import styled from "styled-components";
 import Button from "./Button";
 import axios from "axios";
 import { useSpring, animated } from '@react-spring/web'
-import { editProject } from "../../api/project";
-import { useQuery } from "react-query";
-
+import { addProject, editProject } from "../../api/project";
+import { QueryClient, useMutation, useQuery } from "react-query";
+import { useLocation } from "react-router-dom";
 const Modal = ({ onClose, project = {
   title: "",
   info: "",
@@ -16,12 +16,26 @@ const Modal = ({ onClose, project = {
 } }) => {
   const [imgfile, setimageFile] = useState('');
   const [inputvalue, setinputValue] = useState(project);
-  console.log(inputvalue)
+
+  const queryClient = new QueryClient()
+  const location = useLocation()
+  const mutation = useMutation(addProject,{
+    onSuccess:() => {
+      queryClient.invalidateQueries("project")
+      window.location.reload()
+
+      onClose(false)
+    }
+  })
+  // console.log(inputvalue)
   const onAddButtonHandler = async () => {
     if(inputvalue.info.length > 20) {
       alert('소개글은 20자 이내로 입력해 주세요!')
       return null
-    }else if(inputvalue.title === ""){
+    }if(inputvalue.title.length > 10){
+      alert('제목은 10자 이내로 입력해 주세요')
+      return null
+    }if(inputvalue.title === ""){
       alert('프로젝트명을 입력해 주세요')
       return null
     }if(inputvalue.info ===""){
@@ -37,10 +51,9 @@ const Modal = ({ onClose, project = {
       alert('URL을 입력해 주세요')
       return null
     }if(inputvalue){
-      axios.post(`${process.env.REACT_APP_SERVER_URL}/project`, inputvalue);
-
-      onClose(false);
+      await mutation.mutate(inputvalue)
     }
+
 };
     
 const {isLoading, isError, data} = useQuery("project", editProject);
