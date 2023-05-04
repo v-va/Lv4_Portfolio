@@ -1,29 +1,28 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { getProject } from "../api/project";
+
+
 
 const Main = () => {
-    const [proj, setProj] = useState([{ id: '', title: "", info: "", content: "", path: "", url: "" }]);
+    const {isLoading, isError, data} = useQuery("project", getProject)
 
-    const fetchProj = async () => {
-        const { data } = await axios.get("http://localhost:4000/project");
-        console.log("data", data);
-        setProj(data);
-    };
+    if (isLoading) {
+        return<div>로딩중입니다..</div>
+    }
 
-    useEffect(() => {
-        // 마운팅 됐을 때 실행
-        fetchProj();
-        return () => {
-            // 언마운팅 될 때 실행할 부분
-        };
-    }, []); //[] : dependency array
+    if(isError) {
+        return <div>오류가 발생하였습니다!</div>
+    }
 
     return (
         <>
+        {data?
             <StContainer>
-                {proj.map((pj) => {
+                {data.map((pj) => {
                     return (
                         <StProjWrap to={`/detail/${pj.id}`} key={pj.id}>
                             <div>
@@ -31,12 +30,12 @@ const Main = () => {
                             </div>
                             <StProjContents>
                                 <StProjTitle>{pj.title}</StProjTitle>
-                                <StProjInfo>{pj.content}</StProjInfo>
+                                <StProjInfo>{pj.info}</StProjInfo>
                             </StProjContents>
                         </StProjWrap>
                     );
                 })}
-            </StContainer>
+            </StContainer>:null}
         </>
     );
 };
