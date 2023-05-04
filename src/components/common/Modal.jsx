@@ -5,7 +5,7 @@ import Button from "./Button";
 import axios from "axios";
 import { useSpring, animated } from '@react-spring/web'
 import { addProject, editProject } from "../../api/project";
-import { QueryClient, useMutation, useQuery } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { useLocation } from "react-router-dom";
 
 const Modal = ({ onClose, project = {
@@ -17,7 +17,7 @@ const Modal = ({ onClose, project = {
 }, editModeModal = false }) => {
   const [imgfile, setimageFile] = useState('');
   const [inputvalue, setinputValue] = useState(project);
-  const queryClient = new QueryClient()
+  const queryClient = useQueryClient()
   const location = useLocation()
   const mutation = useMutation(addProject,{
     onSuccess:() => {
@@ -66,7 +66,7 @@ const Modal = ({ onClose, project = {
 const projectEditMutation = useMutation(editProject,{
   onSuccess:() => {
     queryClient.invalidateQueries("project")
-    window.location.reload()
+    // window.location.reload()
     onClose(false)
   }
 })
