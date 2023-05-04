@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
 import Button from "./Button";
-import axios from "axios";
 import { useSpring, animated } from '@react-spring/web'
 import { addProject, editProject } from "../../api/project";
 import { useMutation, useQueryClient } from "react-query";
@@ -22,18 +21,17 @@ const Modal = ({ onClose, project = {
   const mutation = useMutation(addProject,{
     onSuccess:() => {
       queryClient.invalidateQueries("project")
-      window.location.reload()
-
+      window.location.reload('/')
       onClose(false)
+      
     }
   })
-  // console.log(inputvalue)
   const onAddButtonHandler = async () => {
-    if(inputvalue.info.length > 20) {
-      alert('소개글은 20자 이내로 입력해 주세요!')
+    if(inputvalue.info.length > 50) {
+      alert('소개글은 50자 이내로 입력해 주세요!')
       return null
-    }if(inputvalue.title.length > 10){
-      alert('제목은 10자 이내로 입력해 주세요')
+    }if(inputvalue.title.length > 40){
+      alert('제목은 40자 이내로 입력해 주세요')
       return null
     }if(inputvalue.title === ""){
       alert('프로젝트명을 입력해 주세요')
@@ -54,42 +52,33 @@ const Modal = ({ onClose, project = {
     if(editModeModal){
       projectEditMutation.mutate(inputvalue)
     }
-    else if(inputvalue){
-      await mutation.mutate(inputvalue)
+    if(inputvalue){
+      mutation.mutate(inputvalue)
 
     }
 
 };
     
-// const {isLoading, isError, data} = useQuery("project", ()=>editProject(project));
 
 const projectEditMutation = useMutation(editProject,{
   onSuccess:() => {
     queryClient.invalidateQueries("project")
-    // window.location.reload()
+
     onClose(false)
   }
 })
 
-// if(isLoading){
-//   return <h1>로딩 중입니다...</h1>
-// }
-
-// if(isError){
-//   return <h1>오류가 발생하였습니다...</h1>
-// }
 
 
-
-// const openAnimation = useSpring({
-//   from: { opacity: 0 },
-//   to: { opacity: 1 },
-//   config: { duration: 300 },
-// });
+const openAnimation = useSpring({
+  from: { opacity: 0 },
+  to: { opacity: 1 },
+  config: { duration: 300 },
+});
 
   return createPortal(
-    // <animated.div
-    // style={openAnimation}>
+    <animated.div
+    style={openAnimation}>
     <ModalBG>
       <Modalbox>
         <Headers>
@@ -205,8 +194,8 @@ const projectEditMutation = useMutation(editProject,{
         </Footer>
       </Modalbox>
     </ModalBG>
-    // </animated.div>,
-    ,document.getElementById("modal")
+    </animated.div>,
+    document.getElementById("modal")
   );
 };
 
