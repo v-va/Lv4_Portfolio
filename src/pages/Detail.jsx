@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
 import Modal from "../components/common/Modal";
 import { GetDetailProject , delProject } from "../api/project";
 import { QueryClient, useMutation } from "react-query";
@@ -66,13 +65,6 @@ const Detail = () => {
             {project?
             <StContainer>
                 <StProjWrap>
-                    <StProjThumbnail>
-                        <img src={project.path} alt="" />
-                    </StProjThumbnail>
-                    <StProjContents>
-                        <StProjTitle to={project.url}>
-                            {project.title} <StClickIcon>click!</StClickIcon>
-                        </StProjTitle>
                         <StBtnWrap>
                             <StBtn onClick={() => clickEditBtnHandler(project.id)}>수정</StBtn>
                             <StBtn
@@ -83,6 +75,13 @@ const Detail = () => {
                                 삭제
                             </StBtn>
                         </StBtnWrap>
+                    <StProjThumbnail>
+                        <img src={project.path} alt="" />
+                    </StProjThumbnail>
+                    <StProjContents>
+                        <StProjTitle to={project.url}>
+                            {project.title} <StClickIcon>click!</StClickIcon>
+                        </StProjTitle>
                         <StProjintro>{project.content}</StProjintro>
                     </StProjContents>
                 </StProjWrap>
@@ -103,6 +102,7 @@ const StProjWrap = styled.div`
     width: 70%;
 `;
 const StProjThumbnail = styled.div`
+    display: flex;
     height: 400px;
     background-color: lightgray;
     border-radius: 30px;
@@ -126,7 +126,7 @@ const StClickIcon = styled.span`
 `;
 const StBtnWrap = styled.div`
     float: right;
-    margin-top: -10px;
+    margin-top: -50px;
     width: 100px;
     display: flex;
     justify-content: center;
