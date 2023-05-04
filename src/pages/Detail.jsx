@@ -3,39 +3,54 @@ import styled from "styled-components";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Modal from "../components/common/Modal";
+import { GetDetailProject , delProject } from "../api/project";
+import { QueryClient, useMutation } from "react-query";
 
 const Detail = () => {
     // 조회 영역
-    const [project, setProject] = useState("");
     const { id } = useParams();
-    const fetchProject = async () => {
-        const { data } = await axios.get(`${process.env.REACT_APP_SERVER_URL}/project/${id}`);
-        setProject(data)
-    };
-    useEffect(() => {
-        fetchProject();
-    }, []);
-
+    const { project ,isLoading, isError } = GetDetailProject(id)
+    
+    
     //삭제 영역
-    const navigate = useNavigate();
+    const navigate = useNavigate()
 
-    const onDeleteButtonHandler = async (id) => {
-        if (window.confirm("삭제 하시겠습니까?")) {
-            axios.delete(`${process.env.REACT_APP_SERVER_URL}/project/${id}`);
-            navigate("/");
-            setProject("");
-            alert("삭제되었습니다");
-        } else {
+    const queryClient = new QueryClient()
+
+    const mutation = useMutation(delProject,{
+        onSuccess: () => {
+            alert('삭제되었습니다')
+            queryClient.invalidateQueries("project")
+            navigate('/')
+        }
+    })
+    
+    const deleteButtonHandler = async () => {
+        if(window.confirm('삭제 하시겠습니까?')){
+            await mutation.mutate(id)
+        }else{
             return;
         }
-    };
+    }
 
     
+
+
     // 수정 영역
     const [modal, setModal] = useState(false);
     const clickEditBtnHandler = async () => {
         setModal(true);
     };
+    
+    // 상태 처리
+    if (isLoading) {
+        return<div>로딩중입니다..</div>
+    }
+
+    if(isError) {
+        return <div>오류가 발생하였습니다!</div>
+    }
+
 
     return (
         <>
@@ -47,6 +62,7 @@ const Detail = () => {
                     project={project}
                 />
             )}
+            {project?
             <StContainer>
                 <StProjWrap>
                     <StProjThumbnail>
@@ -60,7 +76,7 @@ const Detail = () => {
                             <StBtn onClick={() => clickEditBtnHandler(project.id)}>수정</StBtn>
                             <StBtn
                                 onClick={() => {
-                                    onDeleteButtonHandler(project.id);
+                                    deleteButtonHandler()
                                 }}
                             >
                                 삭제
@@ -69,7 +85,7 @@ const Detail = () => {
                         <StProjintro>{project.content}</StProjintro>
                     </StProjContents>
                 </StProjWrap>
-            </StContainer>
+            </StContainer>:null}
         </>
     );
 };
